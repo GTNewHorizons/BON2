@@ -13,13 +13,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import com.github.parker8283.bon2.data.BONFiles;
 import com.google.gson.annotations.SerializedName;
 
 import net.minecraftforge.srgutils.MinecraftVersion;
 
 public class MCPVersions {
-    private static final String FORGE_MAVEN = "http://files.minecraftforge.net/maven/";
+    private static final String FORGE_MAVEN = "https://maven.minecraftforge.net/";
     private static final String MCP_ROOT = "de/oceanlabs/mcp/mcp/";
     private static final String MCP_CONFIG_ROOT = "de/oceanlabs/mcp/mcp_config/";
     private static final Pattern SNAPSHOT = Pattern.compile(".+-\\d{8}\\.\\d{6}");
@@ -53,31 +61,43 @@ public class MCPVersions {
     }
 
     private static Set<MCPVersion> findMcp() {
-        return findFromForgeMaven(new File("data/mcp_manifest.json"), FORGE_MAVEN + MCP_ROOT, MCPVersionOld::new);
+        return findFromForgeMaven(new File("data/mcp_manifest.xml"), FORGE_MAVEN + MCP_ROOT, MCPVersionOld::new);
     }
     private static Set<MCPVersion> findMcpConfig() {
-        return findFromForgeMaven(new File("data/mcp_config_manifest.json"), FORGE_MAVEN + MCP_CONFIG_ROOT, MCPVersionNew::new);
+        return findFromForgeMaven(new File("data/mcp_config_manifest.xml"), FORGE_MAVEN + MCP_CONFIG_ROOT, MCPVersionNew::new);
     }
 
     private static Set<MCPVersion> findFromForgeMaven(File cache, String root, Function<String, ? extends MCPVersion> factory) {
         try {
-            if (!DownloadUtils.downloadWithCache(new URL(root + "maven-metadata.json"), cache, true, false)) {
-                System.out.println("Failed to download MCP Version manifest from: " + root + "maven-metadata.json");
+            if (!DownloadUtils.downloadWithCache(new URL(root + "maven-metadata.xml"), cache, true, false)) {
+                System.out.println("Failed to download MCP Version manifest from: " + root + "maven-metadata.xml");
                 return Collections.emptySet();
             }
-
-            Manifest manifest = IOUtils.loadJson(cache, Manifest.class);
-            if (manifest == null || manifest.versions == null)
-                return Collections.emptySet();
-
+            
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dbBuilder.parse(cache);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("version");
+            
+            if(nList == null)
+            	return Collections.emptySet();
+            
             Set<MCPVersion> versions = new HashSet<>();
-            for (String v : manifest.versions) {
-                if (!SNAPSHOT.matcher(v).matches())
-                    versions.add(factory.apply(v));
+            
+            for(int i = 0; i < nList.getLength(); i++) {
+            	String v = nList.item(i).getTextContent();
+            	if (!SNAPSHOT.matcher(v).matches())
+            		try {
+						MCPVersion ver = factory.apply(v);
+	                    versions.add(ver);
+					} catch (NumberFormatException e) {
+						System.out.println("Could not parse version " + v + " in " + root + "maven-metadata.xml");
+					}
             }
             return versions;
-        } catch (IOException e) {
-            System.out.println("Failed to download Version manifest from: " + root + "maven-metadata.json");
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            System.out.println("Failed to download Version manifest from: " + root + "maven-metadata.xml");
             e.printStackTrace();
             return Collections.emptySet();
         }

@@ -23,8 +23,8 @@ import net.minecraftforge.srgutils.MinecraftVersion;
 
 public class MappingVersions {
 
-    private static final String VERSION_JSON = "http://export.mcpbot.bspk.rs/versions.json";
-    private static final String FORGE_MAVEN = "http://files.minecraftforge.net/maven/";
+    private static final String VERSION_JSON = "https://maven.minecraftforge.net/de/oceanlabs/mcp/versions.json";
+    private static final String FORGE_MAVEN = "https://maven.minecraftforge.net/";
     private static final String MCP_ROOT = "de/oceanlabs/mcp/";
     private static final MinecraftVersion v1_14_4 = MinecraftVersion.from("1.14.4");
 
