@@ -100,6 +100,7 @@ public class BON2 {
             try {
                 IProgressListener progress = new CLIProgressListener();
 
+                MinecraftVersions.getKnownVersions();
                 Map<String, URL> urls = MinecraftVersions.getDownloadUrls(mcp.getMCVersion());
                 Map<File, URL> files = new HashMap<>();
                 files.put(mapping.getTarget(), BONUtils.toUrl(mapping.getUrl()));
