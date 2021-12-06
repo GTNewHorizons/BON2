@@ -289,7 +289,7 @@ public class GuiDownloadNew extends JFrame {
                         });
                         break;
                     case OFFICIAL:
-                        mcnode.add(new NameableDefaultMutableTreeNode("Official", l.get(0)));
+                        mcnode.add(new NameableDefaultMutableTreeNode("Mojang", l.get(0)));
                         break;
                 }
             });
