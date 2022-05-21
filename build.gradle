@@ -8,7 +8,7 @@ plugins {
   id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
-version = '2.5.0.' + (System.getenv('BUILD_NUMBER') ?: 'CUSTOM')
+version = '2.5.1.' + (System.getenv('BUILD_NUMBER') ?: 'CUSTOM')
 group = 'com.github.parker8283'
 targetCompatibility = sourceCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
