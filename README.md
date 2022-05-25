@@ -4,7 +4,7 @@ BON2
 A rewrite for Immibis's bearded-octo-nemesis for ForgeGradle by tterrag, with features by LexManos.
 
 ## Releases
-- New releases available in the "[Releases](https://github.com/glowredman/BON2/releases)" section
+- New releases available in the "[Releases](https://github.com/GTNewHorizons/BON2/releases)" section
 - Old releases available on [tterrag's Jenkins](https://ci.tterrag.com/job/BON2/).
 
 ## Headless Mode Flags
