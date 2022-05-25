@@ -219,7 +219,7 @@ public class DownloadUtils {
         String expected = null;
         try {
             expected = downloadString(new URL(url.toString() + ".md5"));
-        } catch (IOException e) {
+        } catch (Exception e) {
             //Eat it, some repos don't have a simple checksum.
         }
         if (expected == null && bypassLocal) return false; // Ignore local file if the remote doesn't have it.
