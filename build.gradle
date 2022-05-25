@@ -1,14 +1,15 @@
 plugins {
-  id 'com.github.ben-manes.versions' version '0.25.0'
+  id 'com.github.ben-manes.versions'   version '0.25.0'
   id 'java'
   id 'maven'
   id 'maven-publish'
   id 'eclipse'
   id 'idea'
   id 'com.github.johnrengelman.shadow' version '5.1.0'
+  id 'com.palantir.git-version'        version '0.13.0'
 }
 
-version = '2.5.1.' + (System.getenv('BUILD_NUMBER') ?: 'CUSTOM')
+version = gitVersion() + '-' + (System.getenv('BUILD_NUMBER') ?: 'CUSTOM')
 group = 'com.github.parker8283'
 targetCompatibility = sourceCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
@@ -79,28 +80,17 @@ publishing {
                 name = project.archivesBaseName
                 packaging = 'jar'
                 description = 'A tool that remaps binary jar files'
-                url = 'https://github.com/tterrag1098/BON2'
+                url = 'https://github.com/GTNewHorizons/BON2'
 
                 scm {
-                    url = 'https://github.com/tterrag1098/BON2'
-                    connection = 'scm:git:git://github.com/tterrag1098/BON2.git'
-                    developerConnection = 'scm:git:git@github.com:tterrag1098/BON2.git'
+                    url = 'https://github.com/GTNewHorizons/BON2'
+                    connection = 'scm:git:git://github.com/GTNewHorizons/BON2.git'
+                    developerConnection = 'scm:git:git@github.com:GTNewHorizons/BON2.git'
                 }
 
                 issueManagement {
                     system = 'github'
-                    url = 'https://github.com/tterrag1098/BON2/issues'
-                }
-
-                developers {
-                    developer {
-                        id = 'cpw'
-                        name = 'cpw'
-                    }
-                    developer {
-                        id = 'LexManos'
-                        name = 'Lex Manos'
-                    }
+                    url = 'https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues'
                 }
             }
         }
