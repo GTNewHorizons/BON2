@@ -97,15 +97,11 @@ publishing {
     }
     repositories {
         maven {
-            if (project.hasProperty('mavenUrl')) {
-                credentials {
-                    username project.properties.mavenUser
-                    password project.properties.mavenPassword
-                }
-                url project.properties.mavenUrl
-            } else {
-                url 'file://' + rootProject.file('repo').getAbsolutePath()
+            credentials {
+                username project.properties.mavenUser
+                password project.properties.mavenPassword
             }
+            url "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases"
         }
     }
 }
